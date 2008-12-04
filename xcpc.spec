@@ -2,7 +2,7 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.7.%{date}wip%{?dist}
+Release:        0.8.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 Group:          Applications/Emulators
@@ -11,18 +11,14 @@ URL:            http://xcpc.sourceforge.net/
 Source0:        http://dl.sf.net/%{name}/%{name}-%{date}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{?fedora} < 6
-BuildRequires: openmotif-devel
-%else
-BuildRequires: lesstif-devel
-%endif
+BuildRequires:  lesstif-devel
 BuildRequires:  glib2-devel
 BuildRequires:  libdsk-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  libICE-devel
 BuildRequires:  libtool
-BuildRequires: desktop-file-utils
-Requires: hicolor-icon-theme
+BuildRequires:  desktop-file-utils
+Requires:       hicolor-icon-theme
 
 
 %description
@@ -84,13 +80,18 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
-%{_datadir}/%{name}/*
+%{_datadir}/%{name}
 %{_datadir}/applications/dribble-%{name}.desktop
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.xpm
 %doc AUTHORS ChangeLog COPYING README
 
 
 %changelog
+* Thu Dec 04 2008 Andrea Musuruane <musuruan@gmail.com> 0.0-0.8.20070122wip
+- Fixed unowned directory (BZ #214)
+- Removed old Fedora stuff
+- Cosmetic changes 
+
 * Sat Jul 26 2008 Andrea Musuruane <musuruan@gmail.com> 0.0-0.7.20070122wip
 - Changed license due to new guidelines
 - Removed %%{?dist} tag from changelog
