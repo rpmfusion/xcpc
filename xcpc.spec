@@ -2,7 +2,7 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.11.%{date}wip%{?dist}
+Release:        0.12.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 Group:          Applications/Emulators
@@ -87,6 +87,9 @@ fi
 
 
 %changelog
+* Tue Mar 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.0-0.12.20070122wip
+- https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.0-0.11.20070122wip
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
