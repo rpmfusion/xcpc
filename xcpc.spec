@@ -2,14 +2,12 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.12.%{date}wip%{?dist}
+Release:        0.13.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
-Group:          Applications/Emulators
 License:        GPLv2+
 URL:            http://xcpc.sourceforge.net/
 Source0:        http://dl.sf.net/%{name}/%{name}-%{date}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  lesstif-devel
 BuildRequires:  glib2-devel
@@ -25,6 +23,7 @@ Requires:       hicolor-icon-theme
 Xcpc is a portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C.
  
 It is designed to run on any POSIX system (Linux/BSD/UNIX-like OSes).
+
 
 %prep
 %setup -q -n %{name}-%{date}
@@ -46,7 +45,6 @@ make install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}%{_datadir}/applications
 desktop-file-install \
   --delete-original \
-  --vendor dribble \
   --remove-category Application \
   --dir %{buildroot}%{_datadir}/applications \
   %{buildroot}%{_datadir}/applications/%{name}.desktop
@@ -59,34 +57,35 @@ mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 install -m 644 src/%{name}.xpm %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/
 
 
-%clean
-rm -rf %{buildroot}
-
-
 %post
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+
 %files
-%defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_datadir}/applications/dribble-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.xpm
 %doc AUTHORS ChangeLog COPYING README
 
 
 %changelog
+* Tue Aug 13 2013 Andrea Musuruane <musuruan@gmail.com> 0.0-0.13.20070122wip
+- Dropped obsolete Group, Buildroot, %%clean and %%defattr
+- Dropped desktop vendor tag
+- Updated icon cache scriptlets
+
 * Tue Mar 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.0-0.12.20070122wip
 - https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
