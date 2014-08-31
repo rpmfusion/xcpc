@@ -2,7 +2,7 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.13.%{date}wip%{?dist}
+Release:        0.14.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 License:        GPLv2+
@@ -81,6 +81,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 0.0-0.14.20070122wip
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Tue Aug 13 2013 Andrea Musuruane <musuruan@gmail.com> 0.0-0.13.20070122wip
 - Dropped obsolete Group, Buildroot, %%clean and %%defattr
 - Dropped desktop vendor tag
