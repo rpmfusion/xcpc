@@ -2,17 +2,17 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.14.%{date}wip%{?dist}
+Release:        0.15.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 License:        GPLv2+
-URL:            http://xcpc.sourceforge.net/
-Source0:        http://dl.sf.net/%{name}/%{name}-%{date}.tar.gz
+URL:            http://www.xcpc-emulator.net/
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{date}.tar.gz
 
-BuildRequires:  lesstif-devel
 BuildRequires:  glib2-devel
 BuildRequires:  libdsk-devel
 BuildRequires:  libXmu-devel
+BuildRequires:  libXaw-devel
 BuildRequires:  libICE-devel
 BuildRequires:  libtool
 BuildRequires:  desktop-file-utils
@@ -33,12 +33,11 @@ sed -i -e 's/^Icon=%{name}.xpm$/Icon=%{name}/g' src/%{name}.desktop
 
 
 %build
-%configure --with-motif1
+%configure --with-athena
 make %{?_smp_mflags}
 
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
 # install desktop file and fix categories
@@ -81,6 +80,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Jul 17 2016 Andrea Musuruane <musuruan@gmail.com> - 0.0-0.15.20070122wip
+- Built against libXaw because lesstif has been retired for F24
+- Updated URL
+- Updated Source0
+- Dropped cleaning at the beginning of %%install
+
 * Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 0.0-0.14.20070122wip
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
