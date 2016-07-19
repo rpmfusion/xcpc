@@ -2,7 +2,7 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.15.%{date}wip%{?dist}
+Release:        0.16.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 License:        GPLv2+
@@ -12,7 +12,7 @@ Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{date}.tar.gz
 BuildRequires:  glib2-devel
 BuildRequires:  libdsk-devel
 BuildRequires:  libXmu-devel
-BuildRequires:  libXaw-devel
+BuildRequires:  motif-devel
 BuildRequires:  libICE-devel
 BuildRequires:  libtool
 BuildRequires:  desktop-file-utils
@@ -33,7 +33,7 @@ sed -i -e 's/^Icon=%{name}.xpm$/Icon=%{name}/g' src/%{name}.desktop
 
 
 %build
-%configure --with-athena
+%configure --with-motif1
 make %{?_smp_mflags}
 
 
@@ -80,6 +80,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jul 19 2016 Andrea Musuruane <musuruan@gmail.com> - 0.0-0.16.20070122wip
+- Built against motif because lesstif has been retired for F24
+
 * Sun Jul 17 2016 Andrea Musuruane <musuruan@gmail.com> - 0.0-0.15.20070122wip
 - Built against libXaw because lesstif has been retired for F24
 - Updated URL
