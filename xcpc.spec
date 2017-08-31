@@ -2,7 +2,7 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.17.%{date}wip%{?dist}
+Release:        0.18.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 License:        GPLv2+
@@ -80,6 +80,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.0-0.18.20070122wip
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sun Mar 26 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.0-0.17.20070122wip
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
