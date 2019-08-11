@@ -2,19 +2,22 @@
 
 Name:           xcpc
 Version:        0.0 
-Release:        0.23.%{date}wip%{?dist}
+Release:        0.24.%{date}wip%{?dist}
 Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
 
 License:        GPLv2+
 URL:            http://www.xcpc-emulator.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{date}.tar.gz
+Source1:        %{name}.appdata.xml
 
+BuildRequires:  gcc
 BuildRequires:  glib2-devel
 BuildRequires:  libdsk-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  motif-devel
 BuildRequires:  libICE-devel
 BuildRequires:  libtool
+BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
 
@@ -34,14 +37,13 @@ sed -i -e 's/^Icon=%{name}.xpm$/Icon=%{name}/g' src/%{name}.desktop
 
 %build
 %configure --with-motif1
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 # install desktop file and fix categories
-mkdir -p %{buildroot}%{_datadir}/applications
 desktop-file-install \
   --delete-original \
   --remove-category Application \
@@ -52,23 +54,13 @@ desktop-file-install \
 rm %{buildroot}%{_datadir}/pixmaps/%{name}.xpm
 
 # install icon
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
+install -d %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 install -m 644 src/%{name}.xpm %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/
 
-
-%post
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+# install AppData file
+install -d %{buildroot}%{_metainfodir}
+install -p -m 644 %{SOURCE1} %{buildroot}%{_metainfodir}
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %files
@@ -76,10 +68,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.xpm
-%doc AUTHORS ChangeLog COPYING README
+%{_metainfodir}/%{name}.appdata.xml
+%doc AUTHORS ChangeLog README
+%license COPYING
 
 
 %changelog
+* Sun Aug 11 2019 Andrea Musuruane <musuruan@gmail.com> - 0.0-0.24.20070122wip
+- Added gcc dependency
+- Added AppData file
+- Spec file cleanup
+
 * Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.0-0.23.20070122wip
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
