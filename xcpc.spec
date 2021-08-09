@@ -1,61 +1,66 @@
-%define date 20070122
-
 Name:           xcpc
-Version:        0.0 
-Release:        0.28.%{date}wip%{?dist}
-Summary:        A portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C
+Version:        0.37.0
+Release:        1%{?dist}
+Summary:        A portable Amstrad CPC 464/664/6128 emulator written in C
 
 License:        GPLv2+
 URL:            http://www.xcpc-emulator.net/
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{date}.tar.gz
+Source0:        https://bitbucket.org/ponceto/xcpc/downloads/%{name}-%{version}.tar.gz
 Source1:        %{name}.appdata.xml
 
 BuildRequires:  gcc
-BuildRequires:  glib2-devel
-BuildRequires:  libdsk-devel
-BuildRequires:  libXmu-devel
-BuildRequires:  motif-devel
-BuildRequires:  libICE-devel
+BuildRequires:  make
+BuildRequires:  autoconf
+BuildRequires:  autoconf-archive
+BuildRequires:  automake
 BuildRequires:  libtool
+BuildRequires:  gtk3-devel
+BuildRequires:  zlib-devel
+BuildRequires:  bzip2-devel
+BuildRequires:  portaudio-devel
 BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
+Provides:       bundled(libdsk) = 1.4.2
+Provides:       bundled(lib765) = 0.4.2
 
 
 %description
-Xcpc is a portable Amstrad CPC464/CPC664/CPC6128 Emulator written in C.
- 
-It is designed to run on any POSIX system (Linux/BSD/UNIX-like OSes).
+Xcpc is a portable Amstrad CPC 464/664/6128 emulator written in C. It is
+designed to run on any POSIX compliant system having an X11 server, including
+Linux, BSD and Unix.
 
 
 %prep
-%setup -q -n %{name}-%{date}
+%autosetup
 
-# remove icon extension from desktop file
-sed -i -e 's/^Icon=%{name}.xpm$/Icon=%{name}/g' src/%{name}.desktop 
+# Disable check for C++14 support in GCC
+sed -i '/AX_CHECK_CXX14/d' configure.ac
 
 
 %build
-%configure --with-motif1
+autoreconf -fvi
+%configure --with-x11-toolkit=gtk3
 %make_build
 
 
 %install
 %make_install
 
-# install desktop file and fix categories
+# fix desktop file
 desktop-file-install \
   --delete-original \
-  --remove-category Application \
+  --remove-key Encoding \
+  --set-icon=%{name} \
   --dir %{buildroot}%{_datadir}/applications \
   %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # remove icon installed by make
-rm %{buildroot}%{_datadir}/pixmaps/%{name}.xpm
+rm %{buildroot}%{_datadir}/pixmaps/%{name}.png
 
 # install icon
-install -d %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
-install -m 644 src/%{name}.xpm %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/
+install -d %{buildroot}%{_datadir}/icons/hicolor/64x64/apps
+install -m 644 share/pixmaps/%{name}.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/
 
 # install AppData file
 install -d %{buildroot}%{_metainfodir}
@@ -67,13 +72,16 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/48x48/apps/%{name}.xpm
+%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_metainfodir}/%{name}.appdata.xml
-%doc AUTHORS ChangeLog README
+%doc AUTHORS ChangeLog README.md
 %license COPYING
 
 
 %changelog
+* Sat Aug 07 2021 Andrea Musuruane <musuruan@gmail.com> - 0.37.0-1
+- Updated to new upstream release (BZ #6026)
+
 * Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.0-0.28.20070122wip
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
