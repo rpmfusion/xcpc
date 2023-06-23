@@ -1,6 +1,6 @@
 Name:           xcpc
-Version:        0.37.0
-Release:        3%{?dist}
+Version:        0.38.1
+Release:        1%{?dist}
 Summary:        A portable Amstrad CPC 464/664/6128 emulator written in C
 
 License:        GPLv2+
@@ -79,6 +79,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Fri Apr 14 2023 Andrea Musuruane <musuruan@gmail.com> - 0.38.1-1
+- Updated to new upstream release
+
 * Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 0.37.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1
