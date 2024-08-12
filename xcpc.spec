@@ -1,6 +1,6 @@
 Name:           xcpc
-Version:        0.38.1
-Release:        4%{?dist}
+Version:        0.52.0
+Release:        1%{?dist}
 Summary:        A portable Amstrad CPC 464/664/6128 emulator written in C
 
 License:        GPLv2+
@@ -8,7 +8,7 @@ URL:            http://www.xcpc-emulator.net/
 Source0:        https://bitbucket.org/ponceto/xcpc/downloads/%{name}-%{version}.tar.gz
 Source1:        %{name}.appdata.xml
 
-BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  autoconf
 BuildRequires:  autoconf-archive
@@ -23,6 +23,7 @@ BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
 Provides:       bundled(libdsk) = 1.4.2
 Provides:       bundled(lib765) = 0.4.2
+Provides:       bundled(miniaudio) = 0.11.21
 
 
 %description
@@ -34,13 +35,10 @@ Linux, BSD and Unix.
 %prep
 %autosetup
 
-# Disable check for C++14 support in GCC
-sed -i '/AX_CHECK_CXX14/d' configure.ac
-
 
 %build
 autoreconf -fvi
-%configure --with-x11-toolkit=gtk3
+%configure
 %make_build
 
 
@@ -55,13 +53,6 @@ desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   %{buildroot}%{_datadir}/applications/%{name}.desktop
 
-# remove icon installed by make
-rm %{buildroot}%{_datadir}/pixmaps/%{name}.png
-
-# install icon
-install -d %{buildroot}%{_datadir}/icons/hicolor/64x64/apps
-install -m 644 share/pixmaps/%{name}.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/
-
 # install AppData file
 install -d %{buildroot}%{_metainfodir}
 install -p -m 644 %{SOURCE1} %{buildroot}%{_metainfodir}
@@ -72,13 +63,18 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/mime/packages/x-amstrad-cpc-disk-image.xml
+%{_datadir}/mime/packages/x-amstrad-cpc-snapshot.xml
 %{_metainfodir}/%{name}.appdata.xml
 %doc AUTHORS ChangeLog README.md
 %license COPYING
 
 
 %changelog
+* Mon Aug 12 2024 Andrea Musuruane <musuruan@gmail.com> - 0.52.0-1
+- Updated to new upstream release
+
 * Sat Aug 03 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 0.38.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
