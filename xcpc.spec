@@ -1,5 +1,5 @@
 Name:           xcpc
-Version:        0.52.0
+Version:        0.52.1
 Release:        1%{?dist}
 Summary:        A portable Amstrad CPC 464/664/6128 emulator written in C
 
@@ -72,6 +72,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Tue Sep 24 2024 Andrea Musuruane <musuruan@gmail.com> - 0.52.1-1
+- Updated to new upstream release
+
 * Mon Aug 12 2024 Andrea Musuruane <musuruan@gmail.com> - 0.52.0-1
 - Updated to new upstream release
 
