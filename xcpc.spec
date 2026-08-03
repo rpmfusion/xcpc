@@ -7,6 +7,7 @@ License:        GPLv2+
 URL:            http://www.xcpc-emulator.net/
 Source0:        https://bitbucket.org/ponceto/xcpc/downloads/%{name}-%{version}.tar.gz
 Source1:        %{name}.appdata.xml
+Patch0:         https://github.com/ponceto/xcpc-emulator/commit/c058df42382e1fdc733b047f7b77974e31524f69.patch#/fix_g_free.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  make
@@ -33,7 +34,7 @@ Linux, BSD and Unix.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %build
